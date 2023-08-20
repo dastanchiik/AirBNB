@@ -3,7 +3,13 @@ package com.example.airbnb.models;
 import com.example.airbnb.models.enums.HomeType;
 import com.example.airbnb.models.enums.Status;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springframework.data.repository.cdi.Eager;
+
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,40 +24,27 @@ public class House {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> photos;
     private String title;
-    private Long price;
+    private BigDecimal price;
     private Long maxGuests;
     private String description;
     private String region;
     private String town;
     private String address;
     private Double rating;
+    @Enumerated(EnumType.STRING)
     private HomeType homeType;
+    @Enumerated(EnumType.STRING)
     private Status status;
     @OneToMany(orphanRemoval = true, mappedBy = "house", fetch = FetchType.LAZY)
     private List<FeedBack> feedBacks = new ArrayList<>();
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+    private LocalDateTime createdAt = LocalDateTime.now();
     @OneToMany(orphanRemoval = true, mappedBy = "house", fetch = FetchType.LAZY)
     private List<Booking> bookings = new ArrayList<>();
-
-    public House(Long id, List<String> photos, String title, Long price, Long maxGuests, String description, String region, String town, String address, Double rating, List<FeedBack> feedBacks, User user, List<Booking> bookings) {
-        this.id = id;
-        this.photos = photos;
-        this.title = title;
-        this.price = price;
-        this.maxGuests = maxGuests;
-        this.description = description;
-        this.region = region;
-        this.town = town;
-        this.address = address;
-        this.rating = rating;
-        this.feedBacks = feedBacks;
-        this.user = user;
-        this.bookings = bookings;
-    }
 
     public House() {
     }

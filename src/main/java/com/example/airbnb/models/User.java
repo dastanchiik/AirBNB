@@ -3,25 +3,28 @@ package com.example.airbnb.models;
 import com.example.airbnb.models.enums.Role;
 import lombok.*;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Entity
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
 @ToString
 @Table(name = "users")
+@Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String userName;
     private String email;
+    private LocalDateTime createdAt = LocalDateTime.now();
     private String password;
+    @Enumerated(EnumType.STRING)
     private Role role;
     @ElementCollection
     private Set<Long> likedFeedbacks = ConcurrentHashMap.newKeySet();
@@ -48,18 +51,6 @@ public class User {
 
     public void addToDisLikedFeedbacks(Long feedbackId) {
         disLikedFeedbacks.add(feedbackId);
-    }
-
-    public User(Long id, String userName, String email, String password, Set<Long> likedFeedbacks, Set<Long> disLikedFeedbacks, List<House> houses, List<FeedBack> feedBack, List<Booking> bookings) {
-        this.id = id;
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.likedFeedbacks = likedFeedbacks;
-        this.disLikedFeedbacks = disLikedFeedbacks;
-        this.houses = houses;
-        this.feedBack = feedBack;
-        this.bookings = bookings;
     }
 
     public User() {
