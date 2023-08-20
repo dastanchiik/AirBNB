@@ -3,17 +3,12 @@ package com.example.airbnb.models;
 import lombok.*;
 import javax.persistence.*;
 
-import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.EAGER;
-
 @Entity
-//@NoArgsConstructor
-//@Builder
-//@Getter
-//@Setter
-//@ToString
+@Builder
+@Getter
+@Setter
+@ToString
 @Table(name = "feedbacks")
-//@AllArgsConstructor
 public class FeedBack {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "feedback_id_generator")
@@ -21,26 +16,39 @@ public class FeedBack {
     private Long id;
     private Integer star;
     private String feedback;
-    private  Long likeCount;
-    private  Long dislikeCount;
-//    @OneToOne(cascade = {REFRESH, PERSIST, DETACH, MERGE}, fetch = EAGER)
-//    private User owner;
-//    @ManyToOne
-//    private House house;
+    private volatile int likeCount;
+    private volatile int dislikeCount;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User owner;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private House house;
 
-//    public int incrementLikes() {
-//        return like++;
-//    }
-//
-//    public int decrementLikes() {
-//        return like--;
-//    }
-//
-//    public int incrementDisLikes() {
-//        return dislike++;
-//    }
-//
-//    public int decrementDisLikes() {
-//        return dislike--;
-//    }
+    public int incrementLikes() {
+        return likeCount++;
+    }
+
+    public int decrementLikes() {
+        return likeCount--;
+    }
+
+    public int incrementDisLikes() {
+        return dislikeCount++;
+    }
+
+    public int decrementDisLikes() {
+        return dislikeCount--;
+    }
+
+    public FeedBack(Long id, Integer star, String feedback, int likeCount, int dislikeCount, User owner, House house) {
+        this.id = id;
+        this.star = star;
+        this.feedback = feedback;
+        this.likeCount = likeCount;
+        this.dislikeCount = dislikeCount;
+        this.owner = owner;
+        this.house = house;
+    }
+
+    public FeedBack() {
+    }
 }
