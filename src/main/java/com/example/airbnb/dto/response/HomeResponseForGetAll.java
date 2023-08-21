@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class HomeResponseForGetAll {
     private String id;
+    private String photo;
     private String price;
     private String rate;
     private String title;

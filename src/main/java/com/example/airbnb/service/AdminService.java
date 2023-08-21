@@ -2,28 +2,39 @@ package com.example.airbnb.service;
 
 import com.example.airbnb.dto.response.HomeResponseForGetAll;
 import com.example.airbnb.dto.response.HomeResponseForGetOne;
-import com.example.airbnb.dto.response.SimpleResponse;
 import com.example.airbnb.models.House;
+import com.example.airbnb.models.User;
 import com.example.airbnb.models.enums.Status;
+import com.example.airbnb.models.enums.StatusRequest;
 import com.example.airbnb.repositories.HouseRepository;
+import com.example.airbnb.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class AdminService {
     private final HouseRepository houseRepository;
+    private final UserRepository repository;
 
     public List<HomeResponseForGetAll> getAllApplications(){
         List<HomeResponseForGetAll> responses = new ArrayList<>();
         for (House house: houseRepository.getAllApplications()) {
             HomeResponseForGetAll response = new HomeResponseForGetAll();
             response.setId(String.valueOf(house.getId()));
+//            if (house.getPhotos().get(0) != null){
+//            response.setPhoto(house.getPhotos().get(0));
+//            }else {
+//                response.setPhoto(null);
+//            }
             response.setRate(String.valueOf(house.getRating()));
             response.setTitle(house.getTitle());
             response.setPrice(String.valueOf(house.getPrice()));
@@ -56,18 +67,37 @@ public class AdminService {
         }
     }
 
-    public SimpleResponse selectStatusById(Long id,boolean status){
+    public void selectStatusById(Long id, StatusRequest status) {
         House house = houseRepository.getById(id);
-        if (status == true){
+
+        if (status==StatusRequest.ACCEPTED) {
             house.setStatus(Status.ACCEPTED);
             log.info("successfully worked");
             houseRepository.save(house);
-            return new SimpleResponse("Accepted :)");
-        }else {
+        } else if (status == StatusRequest.REJECTED){
             house.setStatus(Status.REJECTED);
-            log.info("successfully worked");
-            houseRepository.save(house);
-        return new SimpleResponse("Rejected :)");
+        log.info("successfully worked");
+        houseRepository.save(house);
+        } else if (status == StatusRequest.DELETE) {
+            houseRepository.delete(house);
+        }
+    }
+//    @Scheduled(fixedRate = 300000)
+    @Transactional
+    public void findAndRemoveSimilarUsers() {
+        String email = "";
+        for (int i = repository.findAll().size(); i >=0; i--) {
+            Optional<User> userOptional = repository.findById((long) i);
+            email = userOptional.map(User::getEmail).orElse("DefaultEmail"); // Или какой-то другой дефолтный адрес
+            List<User> userList = repository.findLastUsersWithSimilarEmail(email);
+            int size = userList.size();
+            for (int j = 0; j < size; j++) {
+                User user = userList.get(j);
+                if (j == size - 1) {
+                    continue;
+                }
+                repository.delete(user);
+            }
         }
     }
 }

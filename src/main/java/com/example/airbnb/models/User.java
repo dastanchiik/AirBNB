@@ -2,6 +2,8 @@ package com.example.airbnb.models;
 
 import com.example.airbnb.models.enums.Role;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,9 +28,11 @@ public class User {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Set<Long> likedFeedbacks = ConcurrentHashMap.newKeySet();
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Set<Long> disLikedFeedbacks = ConcurrentHashMap.newKeySet();
     @OneToMany(orphanRemoval = true, mappedBy = "user", fetch = FetchType.LAZY)
     private List<House> houses = new ArrayList<>();

@@ -3,10 +3,6 @@ package com.example.airbnb.models;
 import com.example.airbnb.models.enums.HomeType;
 import com.example.airbnb.models.enums.Status;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.springframework.data.repository.cdi.Eager;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -40,7 +36,7 @@ public class House {
     private Status status;
     @OneToMany(orphanRemoval = true, mappedBy = "house", fetch = FetchType.LAZY)
     private List<FeedBack> feedBacks = new ArrayList<>();
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
     private LocalDateTime createdAt = LocalDateTime.now();
     @OneToMany(orphanRemoval = true, mappedBy = "house", fetch = FetchType.LAZY)

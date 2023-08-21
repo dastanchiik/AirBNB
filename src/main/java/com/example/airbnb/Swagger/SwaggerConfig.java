@@ -5,11 +5,10 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
-
-import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
@@ -30,5 +29,10 @@ public class SwaggerConfig {
                 .in(SecurityScheme.In.HEADER)
                 .type(SecurityScheme.Type.HTTP)
                 .scheme("Bearer");
+    }
+
+    @Bean
+    public ModelMapper modelMapper(){
+        return new ModelMapper();
     }
 }
