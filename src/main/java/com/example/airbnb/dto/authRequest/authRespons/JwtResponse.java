@@ -1,5 +1,4 @@
 package com.example.airbnb.dto.authRequest.authRespons;
-
 import com.example.airbnb.models.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
