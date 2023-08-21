@@ -1,5 +1,4 @@
 package com.example.airbnb.Service;
-
 import com.example.airbnb.SecurityConfig.JwtUtils;
 import com.example.airbnb.dto.authRequest.LoginRequest;
 import com.example.airbnb.dto.authRequest.UserRegisterRequest;
@@ -17,51 +16,57 @@ public class AuthService {
     private final UserRepository repository;
     private final JwtUtils jwtUtils;
     private final PasswordEncoder passwordEncoder;
+
     public void registerUser(UserRegisterRequest userRegisterRequest) {
         User user = new User();
-        user.setEmail( userRegisterRequest.getEmail() );
-        user.setRole( Role.USER);
+        user.setUserName(userRegisterRequest.getUsername());
+        user.setEmail(userRegisterRequest.getEmail());
+        user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(userRegisterRequest.getPassword()));
 
         String password = userRegisterRequest.getPassword();
-        if (password.length() > 6) {
-            throw new RuntimeException("Password should be maximum 6 characters long.");
+        if (password.length() < 6) {
+            throw new RuntimeException("Password should be minimum 6 ");
         }
-        if (!Character.isUpperCase(password.charAt(0))) {
-            throw new RuntimeException("Password should start with an uppercase letter.");
+        if (!password.matches(".*[A-Z].*")) {
+            throw new RuntimeException("Password should contain at least one uppercase letter.");
         }
 
+        // Check for '@' symbol in email
+        if (!userRegisterRequest.getEmail().contains("@" + "gmail")) {
+            throw new RuntimeException("Email should contain the '@' symbol and gmail.");
+        }
         user.setPassword(passwordEncoder.encode(password));
 
         if (repository.existsByEmail(userRegisterRequest.getEmail()))
             throw new RuntimeException("The email " + userRegisterRequest.getEmail() + " is already in use!");
 
+
         User savedUser = repository.save(user);
         String token = jwtUtils.generateToken(userRegisterRequest.getEmail());
-
         new JwtResponse(
                 savedUser.getEmail(),
                 token,
-                "Creat",
+                "Created",
                 savedUser.getRole()
 
         );
     }
 
     public JwtResponse authenticate(LoginRequest loginRequest) {
-        User user = repository.findByEmail(loginRequest.getEmail()).orElseThrow(() ->
-                new RuntimeException("User with email: " + loginRequest.getEmail() + " not found!"));
+        User user = repository.findByEmailOrUserName(loginRequest.getEmailOrUserName(), loginRequest.getEmailOrUserName())
+                .orElseThrow(() -> new RuntimeException("User not found!"));
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
+
         String token = jwtUtils.generateToken(user.getEmail());
         return new JwtResponse(
                 user.getEmail(),
                 token,
-                "Creat",
+                "Created",
                 user.getRole()
-
         );
     }
 }
