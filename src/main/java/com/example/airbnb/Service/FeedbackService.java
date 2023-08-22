@@ -1,14 +1,12 @@
 package com.example.airbnb.Service;
 
 import com.example.airbnb.dto.response.FeedbackResponse;
-import com.example.airbnb.dto.response.HouseResponseForGetAll;
+import com.example.airbnb.dto.response.FeedbackResponseFindByID;
 import com.example.airbnb.models.FeedBack;
-import com.example.airbnb.models.House;
 import com.example.airbnb.repositories.FeedbackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.beans.FeatureDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,12 +31,21 @@ public class FeedbackService {
         }
     }
 
-    public FeedBack findById(Long id) {
-        try {
-            return feedbackRepository.findById(id).orElseThrow(() -> new RuntimeException(String.valueOf(+id)));
-        } catch (Exception exception) {
-            throw new RuntimeException(exception);
-        }
+    public FeedbackResponseFindByID findById(Long id) {
+        FeedBack feedBack = feedbackRepository.findById(id).orElseThrow(() -> new RuntimeException(String.valueOf(id)));
+        FeedbackResponseFindByID feedbackResponseFindByID = new FeedbackResponseFindByID();
+        feedbackResponseFindByID.setRating(feedBack.getStar());
+        feedbackResponseFindByID.setDescription(feedBack.getFeedback());
+        feedbackResponseFindByID.setLikeCount(feedBack.getLikeCount());
+        feedbackResponseFindByID.setDislikeCount(feedBack.getDislikeCount());
+        feedbackResponseFindByID.setUserId(feedBack.getOwner().getId());
+        return feedbackResponseFindByID;
+
+
+
+
+
+
     }
 
     public FeedBack update(Long id, FeedBack feedBack) {

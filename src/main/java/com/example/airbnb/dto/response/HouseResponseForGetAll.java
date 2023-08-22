@@ -11,7 +11,7 @@ import java.util.List;
 public class HouseResponseForGetAll {
     private String title;
     private String region;
-    private Long   price;
+    private String price;
     private Long  MaxGuest;
     private double rating;
     private List<String> images = new ArrayList<>();

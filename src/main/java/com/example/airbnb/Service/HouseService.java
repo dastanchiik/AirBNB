@@ -1,14 +1,12 @@
 package com.example.airbnb.Service;
 
+import com.example.airbnb.dto.response.HouseResponseFindByID;
 import com.example.airbnb.dto.response.HouseResponseForGetAll;
-import com.example.airbnb.dto.response.UserResponse;
 import com.example.airbnb.models.House;
-import com.example.airbnb.models.User;
 import com.example.airbnb.repositories.HouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,11 +43,18 @@ public class HouseService {
     }
 
 
-    public House findById(Long id) {
-        return houseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(String.valueOf(id)));
+    public HouseResponseFindByID findById(Long id) {
+        House house = houseRepository.findById(id).orElseThrow(() -> new RuntimeException(String.valueOf(id)));
+        HouseResponseFindByID houseResponseFindByID = new HouseResponseFindByID();
+        houseResponseFindByID.setName(house.getTitle());
+        houseResponseFindByID.setAddresses(house.getAddress());
+        houseResponseFindByID.setDescription(house.getDescription());
+        houseResponseFindByID.setMaxGuest(house.getMaxGuests());
+        houseResponseFindByID.setId(house.getId());
+        houseResponseFindByID.setUserId(house.getUser().getId());
+        houseResponseFindByID.setHomeType(String.valueOf(house.getHomeType()));
+        return houseResponseFindByID;
     }
-
 
     public House save(House house) {
         try {
@@ -66,7 +71,7 @@ public class HouseService {
             HouseResponseForGetAll houseResponseForGetAll = new HouseResponseForGetAll();
             houseResponseForGetAll.setTitle(house.getTitle());
             houseResponseForGetAll.setRegion(house.getRegion());
-            houseResponseForGetAll.setPrice(house.getPrice());
+            houseResponseForGetAll.setPrice(String.valueOf(house.getPrice()));
             houseResponseForGetAll.setMaxGuest(house.getMaxGuests());
             houseResponseForGetAll.setRating(house.getRating());
             houseResponseForGetAll.setImages(house.getPhotos());
@@ -76,4 +81,4 @@ public class HouseService {
         return list;
     }
 
-    }
+}

@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @Setter
-@AllArgsConstructor
 @ToString
 @AllArgsConstructor
 @Table(name = "feedbacks")
@@ -23,7 +22,6 @@ public class FeedBack {
     private LocalDateTime createdAt = LocalDateTime.now();
     @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
-    private LocalDateTime createdAt = LocalDateTime.now();
     @ManyToOne(fetch = FetchType.LAZY)
     private House house;
 

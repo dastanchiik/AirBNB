@@ -4,6 +4,7 @@ import com.example.airbnb.dto.response.BookingResponse;
 import com.example.airbnb.dto.response.BookingResponseFindByID;
 import com.example.airbnb.models.Booking;
 import com.example.airbnb.repositories.BookingRepository;
+import com.example.airbnb.repositories.HouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookingService {
     private final BookingRepository bookingRepository;
+    private final HouseRepository houseRepository;
 
     public Booking saveBooking(Booking booking) {
         try {
@@ -44,13 +46,20 @@ public class BookingService {
     }
 
 
-    public Booking findById(Long id) {
-            Booking booking1 = bookingRepository.findById(id).orElseThrow(() -> new RuntimeException(String.valueOf(id)));
+    public BookingResponseFindByID findById(Long id) {
+        Booking booking1 = bookingRepository.findById(id).orElseThrow(() -> new RuntimeException(String.valueOf(id)));
         BookingResponseFindByID bookingResponseFindByID = new BookingResponseFindByID();
-        bookingResponseFindByID.setName(booking1.get);
-
+        bookingResponseFindByID.setName(houseRepository.findById(id).get().getTitle());
+        bookingResponseFindByID.setAddresses(houseRepository.findById(id).get().getAddress());
+        bookingResponseFindByID.setDescription(houseRepository.findById(id).get().getDescription());
+        bookingResponseFindByID.setMaxGuest(houseRepository.findById(id).get().getMaxGuests());
+        bookingResponseFindByID.setId(String.valueOf(booking1.getId()));
+        bookingResponseFindByID.setUserId(String.valueOf(booking1.getUser().getId()));
+        bookingResponseFindByID.setHomeType(String.valueOf(houseRepository.findById(id).get().getHomeType()));
+        return bookingResponseFindByID;
 
     }
+
 
     public List<BookingResponse> findAll() {
         List<BookingResponse> list = new ArrayList<>();
