@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class FeedbackResponseFindByID {
     private String id;
+    private String photo;
     private String name;
     private String description;
     private  Long userId;

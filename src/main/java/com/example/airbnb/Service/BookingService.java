@@ -8,7 +8,6 @@ import com.example.airbnb.repositories.HouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,18 +60,17 @@ public class BookingService {
     }
 
 
-    public List<BookingResponse> findAll() {
-        List<BookingResponse> list = new ArrayList<>();
-        for (Booking booking : bookingRepository.findAll()) {
-            BookingResponse bookingResponse = new BookingResponse();
-            bookingResponse.setDays(booking.getDays());
-            bookingResponse.setTotalMoney(booking.getTotalMoney());
-            bookingResponse.setCarNumber(booking.getCardNumber());
-            bookingResponse.setStatus(booking.getStatus());
-            bookingResponse.setCheckin(booking.getCheckin());
-            bookingResponse.setCheckout(booking.getCheckout());
-
-        }
-        return list;
-    }
+//    public List<BookingResponse> findAll() {
+//        List<BookingResponse> list = new ArrayList<>();
+//        for (Booking booking : bookingRepository.findAll()) {
+//            BookingResponse bookingResponse = new BookingResponse();
+//            bookingResponse.setTotalMoney(booking.getTotalMoney());
+//            bookingResponse.setCarNumber(booking.getCardNumber());
+//            bookingResponse.setStatus(booking.getStatus());
+//            bookingResponse.setCheckin(booking.getCheckin());
+//            bookingResponse.setCheckout(booking.getCheckout());
+//
+//        }
+//        return list;
+//    }
 }

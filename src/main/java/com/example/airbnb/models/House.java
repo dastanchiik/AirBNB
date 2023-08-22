@@ -29,6 +29,7 @@ public class House {
     private String region;
     private String town;
     private String address;
+    private boolean blocked;
     private Double rating;
     @Enumerated(EnumType.STRING)
     private HomeType homeType;

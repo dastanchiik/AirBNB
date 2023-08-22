@@ -1,9 +1,6 @@
 package com.example.airbnb.api;
 
-import com.example.airbnb.dto.response.AllUserResponseForAdmin;
-import com.example.airbnb.dto.response.HomeResponseForGetAll;
-import com.example.airbnb.dto.response.HomeResponseForGetOne;
-import com.example.airbnb.dto.response.SimpleResponse;
+import com.example.airbnb.dto.response.*;
 import com.example.airbnb.models.Notification;
 import com.example.airbnb.models.enums.StatusRequest;
 import com.example.airbnb.repositories.HouseRepository;
@@ -61,4 +58,28 @@ public class AdminApi {
         }
         return adminService.getAllUsersForAdmin();
     }
-}
+
+    @GetMapping("/getUser/ById")
+    public OneUserResponseForAdmin getUserById(@RequestParam Long id){
+        return adminService.getStudentByIdForAdmin(id);
+    }
+
+    @GetMapping("/getUser/bookings")
+    public List<BookingResponse> getAllBooking(@RequestParam Long id){
+        return adminService.getAllUserBookings(id);
+    }
+
+    @GetMapping("/getHouses/by/userId")
+    public List<HomeResponseForGetAll> getHousesByUserId(@RequestParam Long id) {
+        return adminService.getHousesByUserId(id);
+    }
+
+    @GetMapping("/get/house/by/id")
+    public List<Object> getHouseById(@RequestParam Long id, @RequestParam(required = false)boolean confirmation) {
+        if (confirmation){
+        adminService.updateBlockedHouse(id);
+        }
+        return adminService.getHouseById(id);
+    }
+
+    }
