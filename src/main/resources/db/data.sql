@@ -1,0 +1,2 @@
+insert into users(created_at,email,password,role,user_name) values (current_timestamp,'admin@gmail.com','$2a$10$sQFkkv6T2j8xSs2MyhhfOOKqJkMfa0oZMZmU403cTdpmxRIw3H0qi','ADMIN','dastanchik');
+insert into users(created_at,email,password,role,user_name) values (current_timestamp,'user@gmail.com','$2a$10$lOhtECqSVKDUVRyrG04jK.AElOaN3lNpJqeqURDvPSLdgwzS1PLF.','USER','dastanchiik');

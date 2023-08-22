@@ -2,11 +2,13 @@ package com.example.airbnb.models;
 
 import lombok.*;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Builder
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -29,12 +31,7 @@ public class Favorite {
             inverseJoinColumns = {@JoinColumn(name = "house_id")}
     )
     private List<House> houses = new ArrayList<>();
-
-    public Favorite(Long id, List<User> users, List<House> houses) {
-        this.id = id;
-        this.users = users;
-        this.houses = houses;
-    }
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public Favorite() {
     }
