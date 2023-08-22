@@ -21,7 +21,7 @@ public class JwtUtils {
         return JWT.create()
                 .withSubject( "User details" )
                 .withClaim( "username", username )
-                .withIssuedAt( new Date() ).withIssuer( "elmirzens" )
+                .withIssuedAt( new Date() ).withIssuer( "dastan" )
                 .withExpiresAt( expirationDate )
                 .sign( Algorithm.HMAC256( secret ) );
     }
