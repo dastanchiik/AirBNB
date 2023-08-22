@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User,Long> {
@@ -16,6 +17,15 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Query("select case when count(u)>0 then true else false end from User u where u.email like :email")
     boolean existsByEmail(@Param(value = "email") String email);
+
+    @Query("select count(u) from User u")
+    int countAllUsers();
+
+ @Query(value = "SELECT * FROM User u WHERE u.email = :email ORDER BY u.id DESC LIMIT 1", nativeQuery = true)
+ User findOneByEmail(String email);
+
+ @Query("SELECT u FROM User u WHERE u.email LIKE %:email% ORDER BY u.id DESC")
+ List<User> findLastUsersWithSimilarEmail(@Param("email") String email);
 
 }
 

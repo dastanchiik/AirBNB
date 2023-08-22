@@ -1,4 +1,5 @@
 package com.example.airbnb.SecurityConfig;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -20,7 +21,7 @@ public class JwtUtils {
         return JWT.create()
                 .withSubject( "User details" )
                 .withClaim( "username", username )
-                .withIssuedAt( new Date() ).withIssuer( "Am taksyr" )
+                .withIssuedAt( new Date() ).withIssuer( "elmirzens" )
                 .withExpiresAt( expirationDate )
                 .sign( Algorithm.HMAC256( secret ) );
     }
