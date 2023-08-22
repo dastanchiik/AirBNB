@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 
+import java.util.List;
+
 @Configuration
 public class SwaggerConfig {
 
@@ -19,12 +21,12 @@ public class SwaggerConfig {
                 .components(new Components()
                         .addSecuritySchemes("Bearer Token", apiKeySecuritySchema()))
                 .info(new Info().title("AirBNB").description("Written by: AirBNB"))
-                .addSecurityItem(new SecurityRequirement().addList("Bearer Token"));
+                .security(List.of(new SecurityRequirement().addList("Bearer Token")));
     }
 
     private SecurityScheme apiKeySecuritySchema() {
         return new SecurityScheme()
-                .name(HttpHeaders.AUTHORIZATION)
+                .name("Authorization")
                 .description("put your jwt token here!")
                 .in(SecurityScheme.In.HEADER)
                 .type(SecurityScheme.Type.HTTP)
