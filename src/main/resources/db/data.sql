@@ -1,0 +1,1 @@
+insert into users(created_at,email,password,role,user_name) values (current_timestamp,'admin@gmail.com',',admin.111217A','ADMIN','dastanchik');

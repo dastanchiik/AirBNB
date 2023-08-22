@@ -49,10 +49,12 @@ public class AdminApi {
                                        @RequestParam(required = false) Long userId){
         adminService.selectStatusById(id, status);
         Notification notification = new Notification();
+        if (userId!= null){
         notification.setDescription(description);
         notification.setNameHouse(houseRepository.getById(id).getTitle());
         notification.setUser(repository.getById(userId));
         notificationRepository.save(notification);
+        }
         return new SimpleResponse("Successfully");
     }
 

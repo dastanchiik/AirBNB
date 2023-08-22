@@ -30,11 +30,11 @@ public class AdminService {
         for (House house: houseRepository.getAllApplications()) {
             HomeResponseForGetAll response = new HomeResponseForGetAll();
             response.setId(String.valueOf(house.getId()));
-//            if (house.getPhotos().get(0) != null){
-//            response.setPhoto(house.getPhotos().get(0));
-//            }else {
-//                response.setPhoto(null);
-//            }
+            if (!house.getPhotos().isEmpty() && house.getPhotos().get(0) != null) {
+            response.setPhoto(house.getPhotos().get(0));
+            }else {
+                response.setPhoto(null);
+            }
             response.setRate(String.valueOf(house.getRating()));
             response.setTitle(house.getTitle());
             response.setPrice(String.valueOf(house.getPrice()));
@@ -82,7 +82,7 @@ public class AdminService {
             houseRepository.delete(house);
         }
     }
-//    @Scheduled(fixedRate = 300000)
+    @Scheduled(fixedRate = 300000)
     @Transactional
     public void findAndRemoveSimilarUsers() {
         String email = "";
