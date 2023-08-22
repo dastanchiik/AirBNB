@@ -13,10 +13,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.PostConstruct;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 @RequiredArgsConstructor
 public class AirBnbApplication {
+	public static void main(String[] args) {
+		SpringApplication.run(AirBnbApplication.class, args);
+	}
 
     public static void main(String[] args) {
         SpringApplication.run(AirBnbApplication.class, args);

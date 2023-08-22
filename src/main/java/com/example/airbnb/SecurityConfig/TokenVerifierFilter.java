@@ -3,20 +3,22 @@ package com.example.airbnb.SecurityConfig;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.airbnb.Service.AuthUserDetailsService;
 import lombok.RequiredArgsConstructor;
+import com.example.airbnb.service.AuthUserDetailsService;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
 @RequiredArgsConstructor
+@Component
 public class TokenVerifierFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtils;
@@ -24,7 +26,9 @@ public class TokenVerifierFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
             String jwt = authHeader.substring(7);
@@ -34,7 +38,6 @@ public class TokenVerifierFilter extends OncePerRequestFilter {
                         "Invalid JWT Token in Bearer Header"
                 );
             } else {
-
                 try {
                     String username = jwtUtils.validateTokenAndRetrieveClaim(jwt);
                     UserDetails userDetails = authUserDetailsService.loadUserByUsername(username);
@@ -47,7 +50,7 @@ public class TokenVerifierFilter extends OncePerRequestFilter {
                     }
                 } catch (JWTVerificationException exc) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                            "Invalid JWT Token");
+                            "Invalid JWT Token "+exc.getMessage());
                 }
             }
         }
@@ -55,6 +58,3 @@ public class TokenVerifierFilter extends OncePerRequestFilter {
     }
 
 }
-
-
-

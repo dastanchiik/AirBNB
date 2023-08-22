@@ -4,6 +4,7 @@ import com.example.airbnb.Service.AuthService;
 import com.example.airbnb.dto.authRequest.LoginRequest;
 import com.example.airbnb.dto.authRequest.UserRegisterRequest;
 import com.example.airbnb.dto.authRequest.authRespons.JwtResponse;
+import com.example.airbnb.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,10 +34,5 @@ public class AuthApi {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    @GetMapping("hello")
-    @PreAuthorize("hasAnyAuthority('USER')")
-    public String hello() {
-        return "hello";
-    }
 }
+

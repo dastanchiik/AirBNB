@@ -1,4 +1,4 @@
-package com.example.airbnb.Service;
+package com.example.airbnb.service;
 
 import com.example.airbnb.models.User;
 import lombok.RequiredArgsConstructor;

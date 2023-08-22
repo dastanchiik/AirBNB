@@ -1,4 +1,5 @@
-package com.example.airbnb.Service;
+package com.example.airbnb.service;
+
 import com.example.airbnb.models.User;
 import com.example.airbnb.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class AuthUserDetailsService implements UserDetailsService {
         if (user.isEmpty()) {
             throw new RuntimeException("User with " + email + " not found!");
         }
-        return new AuthUserDetails(user.get());
+        return new com.example.airbnb.service.AuthUserDetails(user.get());
     }
 
     }

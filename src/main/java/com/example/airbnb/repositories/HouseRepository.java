@@ -10,8 +10,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+import java.util.List;
+
 @Repository
+@Transactional
 public interface HouseRepository extends JpaRepository<House,Long> {
+
+    @Query("select h from House h where h.status = null order by h.createdAt desc")
+    List<House> getAllApplications();
+
+    @Query("select h from House h where h.status = null and h.id =:id")
+    House getApplicationById(@Param("id") Long id);
+
 
     @Query("select  s from  House  s order by s.title desc")
     List<House> search(@RequestParam("title") String title,
