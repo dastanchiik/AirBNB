@@ -1,11 +1,15 @@
 package com.example.airbnb.service;
 
+import com.example.airbnb.dto.response.AllUserResponseForAdmin;
 import com.example.airbnb.dto.response.HomeResponseForGetAll;
 import com.example.airbnb.dto.response.HomeResponseForGetOne;
+import com.example.airbnb.models.Booking;
 import com.example.airbnb.models.House;
 import com.example.airbnb.models.User;
+import com.example.airbnb.models.enums.Role;
 import com.example.airbnb.models.enums.Status;
 import com.example.airbnb.models.enums.StatusRequest;
+import com.example.airbnb.repositories.BookingRepository;
 import com.example.airbnb.repositories.HouseRepository;
 import com.example.airbnb.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +28,7 @@ import java.util.Optional;
 public class AdminService {
     private final HouseRepository houseRepository;
     private final UserRepository repository;
+    private final BookingRepository bookingRepository;
 
     public List<HomeResponseForGetAll> getAllApplications(){
         List<HomeResponseForGetAll> responses = new ArrayList<>();
@@ -99,5 +104,35 @@ public class AdminService {
                 repository.delete(user);
             }
         }
+    }
+
+    public List<AllUserResponseForAdmin> getAllUsersForAdmin(){
+        List<AllUserResponseForAdmin> responses = new ArrayList<>();
+        for (User user:repository.findAll()){
+            if (user.getRole() == Role.USER){
+            AllUserResponseForAdmin response = new AllUserResponseForAdmin();
+            response.setId(String.valueOf(user.getId()));
+            response.setName(user.getName());
+            response.setEmail(user.getEmail());
+            int countHouses = 0;
+            int countBookings = 0;
+            for (House house:houseRepository.findAll()) {
+                if (house.getUser().getId().equals(user.getId())){
+                countHouses++;
+                }
+            }
+            for (Booking booking:bookingRepository.findAll()) {
+                if (booking.getUser().getId().equals(user.getId())){
+                countBookings++;
+                }
+            }
+            response.setCountBooking(String.valueOf(countBookings));
+            response.setCountAnnouncement(String.valueOf(countHouses));
+            responses.add(response);
+            }else {
+                responses.add(null);
+            }
+        }
+        return responses;
     }
 }
