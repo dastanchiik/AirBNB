@@ -3,6 +3,7 @@ package com.example.airbnb.SecurityConfig;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.airbnb.service.AuthUserDetailsService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Component
 public class TokenVerifierFilter extends OncePerRequestFilter {
 
@@ -23,9 +24,11 @@ public class TokenVerifierFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
-        if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
+        if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer " )) {
             String jwt = authHeader.substring(7);
             if (jwt.isBlank()) {
                 response.sendError(
@@ -45,7 +48,7 @@ public class TokenVerifierFilter extends OncePerRequestFilter {
                     }
                 } catch (JWTVerificationException exc) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                            "Invalid JWT Token");
+                            "Invalid JWT Token "+exc.getMessage());
                 }
             }
         }
@@ -53,6 +56,3 @@ public class TokenVerifierFilter extends OncePerRequestFilter {
     }
 
 }
-
-
-

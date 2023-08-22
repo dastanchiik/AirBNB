@@ -16,10 +16,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
-@PermitAll
 public class UserApi {
     private final NotificationRepository notificationRepository;
 
+    @PermitAll
     @GetMapping("/getAll/notifications")
     public List<NotificationResponse> getAllNotification(){
         List<NotificationResponse>notifications = new ArrayList<>();

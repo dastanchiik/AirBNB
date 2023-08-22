@@ -1,4 +1,5 @@
-package com.example.airbnb.Service;
+package com.example.airbnb.service;
+
 import com.example.airbnb.SecurityConfig.JwtUtils;
 import com.example.airbnb.dto.authRequest.LoginRequest;
 import com.example.airbnb.dto.authRequest.UserRegisterRequest;
@@ -47,7 +48,7 @@ public class AuthService {
 
 
         User savedUser = repository.save(user);
-        String token = jwtUtils.generateToken(savedUser.getEmail());
+        String token = jwtUtils.generateToken(userRegisterRequest.getEmail());
 
        return new JwtResponse(
                 savedUser.getEmail(),
