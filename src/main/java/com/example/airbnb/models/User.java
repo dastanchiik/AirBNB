@@ -2,6 +2,7 @@ package com.example.airbnb.models;
 
 import com.example.airbnb.models.enums.Role;
 import lombok.*;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class User {
     private String userName;
     private String email;
     private String password;
+    @Enumerated(EnumType.STRING)
     private Role role;
     @ElementCollection
     private Set<Long> likedFeedbacks = ConcurrentHashMap.newKeySet();

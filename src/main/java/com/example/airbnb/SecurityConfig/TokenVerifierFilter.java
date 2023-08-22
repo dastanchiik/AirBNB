@@ -2,8 +2,7 @@ package com.example.airbnb.SecurityConfig;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.airbnb.Service.AuthUserDetailsService;
-import jdk.jfr.Category;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,8 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@AllArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class TokenVerifierFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtils;
@@ -35,6 +34,7 @@ public class TokenVerifierFilter extends OncePerRequestFilter {
                         "Invalid JWT Token in Bearer Header"
                 );
             } else {
+
                 try {
                     String username = jwtUtils.validateTokenAndRetrieveClaim(jwt);
                     UserDetails userDetails = authUserDetailsService.loadUserByUsername(username);
