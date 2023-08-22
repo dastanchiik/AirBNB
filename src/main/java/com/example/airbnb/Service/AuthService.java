@@ -17,7 +17,7 @@ public class AuthService {
     private final JwtUtils jwtUtils;
     private final PasswordEncoder passwordEncoder;
 
-    public void registerUser(UserRegisterRequest userRegisterRequest) {
+    public JwtResponse registerUser(UserRegisterRequest userRegisterRequest) {
         User user = new User();
         user.setUserName(userRegisterRequest.getUsername());
         user.setEmail(userRegisterRequest.getEmail());
@@ -33,9 +33,13 @@ public class AuthService {
         }
 
         // Check for '@' symbol in email
-        if (!userRegisterRequest.getEmail().contains("@" + "gmail")) {
-            throw new RuntimeException("Email should contain the '@' symbol and gmail.");
+        if (!userRegisterRequest.getEmail().contains("@" + "gmail"+".com")) {
+            throw new RuntimeException("Email should contain the '@' symbol and gmail.com");
         }
+        if (repository.existsByUserName(userRegisterRequest.getUsername())) {
+            throw new RuntimeException("Username already exists.");
+        }
+
         user.setPassword(passwordEncoder.encode(password));
 
         if (repository.existsByEmail(userRegisterRequest.getEmail()))
@@ -43,8 +47,9 @@ public class AuthService {
 
 
         User savedUser = repository.save(user);
-        String token = jwtUtils.generateToken(userRegisterRequest.getEmail());
-        new JwtResponse(
+        String token = jwtUtils.generateToken(savedUser.getEmail());
+
+       return new JwtResponse(
                 savedUser.getEmail(),
                 token,
                 "Created",
