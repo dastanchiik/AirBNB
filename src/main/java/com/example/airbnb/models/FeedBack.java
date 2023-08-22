@@ -2,12 +2,14 @@ package com.example.airbnb.models;
 
 import lombok.*;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Builder
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
 @Table(name = "feedbacks")
 public class FeedBack {
     @Id
@@ -18,6 +20,7 @@ public class FeedBack {
     private String feedback;
     private volatile int likeCount;
     private volatile int dislikeCount;
+    private LocalDateTime createdAt = LocalDateTime.now();
     @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
     @ManyToOne(fetch = FetchType.LAZY)
