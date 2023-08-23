@@ -70,14 +70,19 @@ public class AdminApi {
     }
 
     @GetMapping("/getHouses/by/userId")
-    public List<HomeResponseForGetAll> getHousesByUserId(@RequestParam Long id) {
-        return adminService.getHousesByUserId(id);
+    public List<HomeResponseForGetAll> getHousesByUserId(@RequestParam Long id,@RequestParam(defaultValue = "false",required = false)Boolean blockAll) {
+        return adminService.getHousesByUserId(id,blockAll);
     }
 
     @GetMapping("/get/house/by/id")
-    public List<Object> getHouseById(@RequestParam Long id, @RequestParam(required = false)boolean confirmation) {
+    public List<Object> getHouseById(@RequestParam Long id,
+                                     @RequestParam(required = false)boolean confirmation,
+                                     @RequestParam(required = false)boolean delete) {
         if (confirmation){
         adminService.updateBlockedHouse(id);
+        }
+        if (delete){
+            houseRepository.deleteById(id);
         }
         return adminService.getHouseById(id);
     }

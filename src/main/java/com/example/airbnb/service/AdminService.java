@@ -169,11 +169,14 @@ public class AdminService {
         return responses;
     }
 
-    public List<HomeResponseForGetAll> getHousesByUserId(Long id) {
+    public List<HomeResponseForGetAll> getHousesByUserId(Long id,Boolean blocking) {
         List<HomeResponseForGetAll> responses = new ArrayList<>();
         for (House house : houseRepository.findAll()) {
-            if (Objects.equals(house.getUser().getId(), id)) {
-
+            if (blocking){
+                house.setBlocked(true);
+                houseRepository.save(house);
+            }
+            if (Objects.equals(house.getUser().getId(), id) && !house.isBlocked()) {
                 HomeResponseForGetAll response = new HomeResponseForGetAll();
                 response.setId(String.valueOf(house.getId()));
                 if (!house.getPhotos().isEmpty() && house.getPhotos().get(0) != null) {

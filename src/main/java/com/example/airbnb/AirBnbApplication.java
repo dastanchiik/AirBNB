@@ -71,15 +71,15 @@ public class AirBnbApplication {
 		feedBack1.setHouse(house1);
 		feedbackRepository.save(feedBack1);
 
-//		Booking booking = new Booking();
-//		booking.setHouse(house1);
-//		booking.setUser(user);
-//		bookingRepository.save(booking);
-//
-//		Booking booking1 = new Booking();
-//		booking1.setHouse(home);
-//		booking1.setUser(user);
-//		bookingRepository.save(booking1);
+		Booking booking = new Booking();
+		booking.setHouse(house1);
+		booking.setUser(user);
+		bookingRepository.save(booking);
+
+		Booking booking1 = new Booking();
+		booking1.setHouse(home);
+		booking1.setUser(user);
+		bookingRepository.save(booking1);
 
 
 	}

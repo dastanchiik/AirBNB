@@ -1,4 +1,4 @@
-package com.example.airbnb.SecurityConfig;
+package com.example.airbnb.securityConfig;
 import com.example.airbnb.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

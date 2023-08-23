@@ -1,4 +1,4 @@
-package com.example.airbnb.SecurityConfig;
+package com.example.airbnb.securityConfig;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
