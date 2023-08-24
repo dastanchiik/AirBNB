@@ -15,6 +15,8 @@ import com.example.airbnb.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -214,6 +216,7 @@ public class AdminService {
             response.setMaxGuests(String.valueOf(house.getMaxGuests()));
             response.setHomeType(String.valueOf(house.getHomeType()));
             response.setPhotos(house.getPhotos());
+            response.setBlocked(house.isBlocked());
             response.setTitle(house.getTitle());
             response.setAddress(house.getAddress());
             if (house.getUser() != null) {
@@ -246,4 +249,18 @@ public class AdminService {
             house.setBlocked(true);
         }
     }
+
+    public Role updateRole(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Role role = repository.findByEmail(authentication.getName()).get().getRole();
+        User user = repository.findByEmail(authentication.getName()).get();
+        if (role == Role.ADMIN){
+            user.setRole(Role.ADMIN_USER);
+        } else if (role == Role.ADMIN_USER) {
+            user.setRole(Role.ADMIN);
+        }
+        repository.save(user);
+        return user.getRole();
+    }
+
 }

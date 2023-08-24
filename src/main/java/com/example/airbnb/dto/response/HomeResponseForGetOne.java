@@ -11,6 +11,7 @@ public class HomeResponseForGetOne {
     private String rating;
     private String homeType;
     private String maxGuests;
+    private boolean blocked;
     private String address;
     private String description;
     private String userId;
