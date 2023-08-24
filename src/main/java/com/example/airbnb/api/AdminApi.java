@@ -2,8 +2,7 @@ package com.example.airbnb.api;
 
 import com.example.airbnb.dto.response.*;
 import com.example.airbnb.models.Notification;
-import com.example.airbnb.models.enums.Role;
-import com.example.airbnb.models.enums.StatusRequest;
+import com.example.airbnb.models.enums.*;
 import com.example.airbnb.repositories.HouseRepository;
 import com.example.airbnb.repositories.NotificationRepository;
 import com.example.airbnb.repositories.UserRepository;
@@ -89,4 +88,12 @@ public class AdminApi {
         return adminService.updateRole();
     }
 
+
+    @GetMapping("/getSorted")
+    public List<HomeResponseForGetAll> sortedHouses(@RequestParam(defaultValue = "ALL") BookedType bookedType,
+                                                    @RequestParam(defaultValue = "ALL") Kind kind,
+                                                    @RequestParam(defaultValue = "ALL") HomeType homeType,
+                                                    @RequestParam(defaultValue = "ALL") PriceType priceType){
+        return adminService.getAllHousingAndSorted(bookedType,kind,homeType,priceType);
+    }
     }

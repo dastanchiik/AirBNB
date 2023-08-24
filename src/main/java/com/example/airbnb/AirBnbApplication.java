@@ -4,7 +4,9 @@ import com.example.airbnb.models.Booking;
 import com.example.airbnb.models.FeedBack;
 import com.example.airbnb.models.House;
 import com.example.airbnb.models.User;
+import com.example.airbnb.models.enums.HomeType;
 import com.example.airbnb.models.enums.Role;
+import com.example.airbnb.models.enums.Status;
 import com.example.airbnb.repositories.BookingRepository;
 import com.example.airbnb.repositories.FeedbackRepository;
 import com.example.airbnb.repositories.HouseRepository;
@@ -15,6 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 
 @SpringBootApplication
 @EnableScheduling
@@ -45,17 +48,56 @@ public class AirBnbApplication {
 		House house1 = new House();
 		house1.setTitle("Baytik");
 		house1.setUser(user);
+		house1.setStatus(Status.ACCEPTED);
+		house1.setHomeType(HomeType.HOUSE);
+		house1.setPrice(BigDecimal.valueOf(123456789));
+		house1.setRating(5.0);
 		houseRepository.save(house1);
 
 		House home = new House();
 		home.setTitle("Oomat Stroi");
 		home.setUser(user12);
+		home.setStatus(Status.ACCEPTED);
+		home.setHomeType(HomeType.HOUSE);
+		home.setPrice(BigDecimal.valueOf(12345678));
+		home.setRating(4.9);
 		houseRepository.save(home);
 
 		House house = new House();
 		house.setTitle("B");
 		house.setUser(user);
+		house.setStatus(Status.ACCEPTED);
+		house.setHomeType(HomeType.HOUSE);
+		house.setPrice(BigDecimal.valueOf(1234567));
+		house.setRating(4.8);
 		houseRepository.save(house);
+
+		House house3 = new House();
+		house3.setTitle("A");
+		house3.setUser(user);
+		house3.setStatus(Status.ACCEPTED);
+		house3.setHomeType(HomeType.APARTMENT);
+		house3.setPrice(BigDecimal.valueOf(123456));
+		house3.setRating(4.7);
+		houseRepository.save(house3);
+
+		House house10 = new House();
+		house10.setTitle("D");
+		house10.setUser(user);
+		house10.setStatus(Status.ACCEPTED);
+		house10.setHomeType(HomeType.APARTMENT);
+		house10.setPrice(BigDecimal.valueOf(12345));
+		house10.setRating(4.6);
+		houseRepository.save(house10);
+
+		House all = new House();
+		all.setTitle("all");
+		all.setUser(user);
+		all.setStatus(Status.ACCEPTED);
+		all.setHomeType(HomeType.ALL);
+		all.setPrice(BigDecimal.valueOf(12343));
+		all.setRating(4.5);
+		houseRepository.save(all);
 
 		FeedBack feedBack = new FeedBack();
 		feedBack.setOwner(user);
