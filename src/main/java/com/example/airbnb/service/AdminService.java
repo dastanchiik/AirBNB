@@ -144,7 +144,9 @@ public class AdminService {
         return response;
     }
 
-    public List<BookingResponse> getAllUserBookings(Long id) {
+    public List<Object> getAllUserBookings(Long id) {
+        List<Object>users = new ArrayList<>();
+        users.add(getStudentByIdForAdmin(id));
         List<BookingResponse> responses = new ArrayList<>();
         User user = repository.findById(id).orElseThrow();
         for (Booking booking : bookingRepository.findAll()) {
@@ -166,10 +168,13 @@ public class AdminService {
                 }
             }
         }
-        return responses;
+        users.addAll(responses);
+        return users;
     }
 
-    public List<HomeResponseForGetAll> getHousesByUserId(Long id,Boolean blocking) {
+    public List<Object> getHousesByUserId(Long id,Boolean blocking) {
+        List<Object> user = new ArrayList<>();
+        user.add(getStudentByIdForAdmin(id));
         List<HomeResponseForGetAll> responses = new ArrayList<>();
         for (House house : houseRepository.findAll()) {
             if (blocking){
@@ -192,7 +197,8 @@ public class AdminService {
                 responses.add(response);
             }
         }
-        return responses;
+        user.addAll(responses);
+        return user;
     }
 
     public List<Object> getHouseById(Long id) {

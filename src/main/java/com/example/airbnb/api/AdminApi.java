@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -19,6 +18,7 @@ import java.util.List;
 @RequestMapping("/api/v1/admin")
 @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
 public class AdminApi {
+
     private final AdminService adminService;
     private final HouseRepository houseRepository;
     private final UserRepository repository;
@@ -52,25 +52,20 @@ public class AdminApi {
     }
 
     @GetMapping("/getAllUser")
-    public List<AllUserResponseForAdmin> getAllUsersForAdmin(@RequestParam(required = false)Long userId) {
-        if (userId != null) {
-            repository.deleteById(userId);
+    public List<AllUserResponseForAdmin> getAllUsersForAdmin(@RequestParam(required = false)Long deleteByUserId) {
+        if (deleteByUserId != null) {
+            repository.deleteById(deleteByUserId);
         }
         return adminService.getAllUsersForAdmin();
     }
 
-    @GetMapping("/getUser/ById")
-    public OneUserResponseForAdmin getUserById(@RequestParam Long id){
-        return adminService.getStudentByIdForAdmin(id);
-    }
-
-    @GetMapping("/getUser/bookings")
-    public List<BookingResponse> getAllBooking(@RequestParam Long id){
+    @GetMapping("/bookings/by/userId")
+    public List<Object> getAllBooking(@RequestParam Long id){
         return adminService.getAllUserBookings(id);
     }
 
     @GetMapping("/getHouses/by/userId")
-    public List<HomeResponseForGetAll> getHousesByUserId(@RequestParam Long id,@RequestParam(defaultValue = "false",required = false)Boolean blockAll) {
+    public List<Object> getHousesByUserId(@RequestParam Long id,@RequestParam(defaultValue = "false",required = false)Boolean blockAll) {
         return adminService.getHousesByUserId(id,blockAll);
     }
 

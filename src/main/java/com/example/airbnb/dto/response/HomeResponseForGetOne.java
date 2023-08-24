@@ -4,7 +4,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class HomeResponseForGetOne <T>{
+public class HomeResponseForGetOne {
     private String id;
     private String title;
     private List<String>photos;

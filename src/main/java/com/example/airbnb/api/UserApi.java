@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +14,10 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
+@PermitAll
 public class UserApi {
     private final NotificationRepository notificationRepository;
 
-    @PermitAll
     @GetMapping("/getAll/notifications")
     public List<NotificationResponse> getAllNotification(){
         List<NotificationResponse>notifications = new ArrayList<>();
