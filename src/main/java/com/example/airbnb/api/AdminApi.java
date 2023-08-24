@@ -89,11 +89,11 @@ public class AdminApi {
     }
 
 
-    @GetMapping("/getSorted")
-    public List<HomeResponseForGetAll> sortedHouses(@RequestParam(defaultValue = "ALL") BookedType bookedType,
-                                                    @RequestParam(defaultValue = "ALL") Kind kind,
-                                                    @RequestParam(defaultValue = "ALL") HomeType homeType,
-                                                    @RequestParam(defaultValue = "ALL") PriceType priceType){
-        return adminService.getAllHousingAndSorted(bookedType,kind,homeType,priceType);
-    }
+//    @GetMapping("/getSorted")
+//    public List<HomeResponseForGetAll> sortedHouses(@RequestParam(defaultValue = "ALL") BookedType bookedType,
+//                                                    @RequestParam(defaultValue = "ALL") Kind kind,
+//                                                    @RequestParam(defaultValue = "ALL") HomeType homeType,
+//                                                    @RequestParam(defaultValue = "ALL") PriceType priceType){
+//        return adminService.getSortedHouses(bookedType,kind,homeType,priceType);
+//    }
     }

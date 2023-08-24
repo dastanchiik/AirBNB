@@ -1,6 +1,10 @@
 package com.example.airbnb.repositories;
 
 import com.example.airbnb.models.House;
+import com.example.airbnb.models.enums.BookedType;
+import com.example.airbnb.models.enums.HomeType;
+import com.example.airbnb.models.enums.Kind;
+import com.example.airbnb.models.enums.PriceType;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,8 +16,30 @@ import java.util.List;
 @Repository
 @Transactional
 public interface HouseRepository extends JpaRepository<House,Long> {
-    List<House> findAll(@Param("sort") Sort sort);
-//    List<House> findAllHouses();
+
+    @Query("select h from House h order by h.rating desc")
+    List<House>sortedHousesPopular();
+
+    @Query("select h from House h order by h.price desc")
+    List<House>sortedHousesHigh();
+
+    @Query("select h from House h order by h.price asc")
+    List<House>sortedHousesLow();
+
+    @Query("select h from House h order by h.createdAt desc ")
+    List<House>sortedHousesLatest();
+
+    @Query("select h from House h order by h.createdAt,h.price desc ")
+    List<House>sortedHousesLatestAndHigh();
+
+    @Query("select h from House h order by h.createdAt desc union select h from House h order by h.price asc")
+    List<House>sortedHousesLatestAndLow();
+
+    @Query("select h from House h order by h.rating desc union select h from House h order by h.price asc")
+    List<House>sortedHousesPopularAndLow();
+
+    @Query("select h from House h order by h.rating desc union select h from House h order by h.price desc ")
+    List<House>sortedHousesPopularAndHigh();
 
     @Query("select h from House h where h.status = null order by h.createdAt desc")
     List<House> getAllApplications();
