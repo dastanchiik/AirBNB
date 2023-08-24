@@ -5,21 +5,21 @@ import com.example.airbnb.models.Booking;
 import com.example.airbnb.models.FeedBack;
 import com.example.airbnb.models.House;
 import com.example.airbnb.models.User;
-import com.example.airbnb.models.enums.Role;
-import com.example.airbnb.models.enums.Status;
-import com.example.airbnb.models.enums.StatusRequest;
+import com.example.airbnb.models.enums.*;
 import com.example.airbnb.repositories.BookingRepository;
 import com.example.airbnb.repositories.FeedbackRepository;
 import com.example.airbnb.repositories.HouseRepository;
 import com.example.airbnb.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.*;
 
 @Service
@@ -30,6 +30,7 @@ public class AdminService {
     private final UserRepository repository;
     private final BookingRepository bookingRepository;
     private final FeedbackRepository feedbackRepository;
+    private final EntityManager entityManager;
 
     public List<HomeResponseForGetAll> getAllApplications() {
         List<HomeResponseForGetAll> responses = new ArrayList<>();
@@ -92,6 +93,16 @@ public class AdminService {
     @Scheduled(fixedRate = 300000)
     @Transactional
     public void findAndRemoveSimilarUsers() {
+        for (Booking booking: bookingRepository.findAll()) {
+            House house = houseRepository.findById(booking.getHouse().getId()).orElseThrow();
+                for (House house1:houseRepository.findAll()) {
+                    if (house1.getBookedType() == null){
+                        house1.setBookedType(BookedType.NOT_BOOKED);
+                    }
+                }
+            house.setBookedType(BookedType.BOOKED);
+            houseRepository.save(house);
+        }
         String email = "";
         for (int i = repository.findAll().size(); i >= 0; i--) {
             Optional<User> userOptional = repository.findById((long) i);
@@ -262,5 +273,84 @@ public class AdminService {
         repository.save(user);
         return user.getRole();
     }
+//    public List<HomeResponseForGetAll> getAllHousingAndSorted(BookedType bookedType, Kind kind, HomeType homeType, PriceType priceType) {
+//        List<House>houses = new ArrayList<>();
+//        List<HomeResponseForGetAll> responses = new ArrayList<>();
+//        for (House house:) {
+//
+//        }
+//    }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    public List<HomeResponseForGetAll> getAllHousingAndSorted(BookedType bookedType, Kind kind, HomeType homeType, PriceType priceType) {
+//        List<HomeResponseForGetAll> responses = new ArrayList<>();
+//        List<House> houses = new ArrayList<>(houseRepository.findAll());
+//
+//        houses.removeIf(house ->
+//                (bookedType != BookedType.ALL && bookedType != house.getBookedType()) ||
+//                (homeType != HomeType.ALL && homeType != house.getHomeType())
+//        );
+//
+//        houses.sort((house1, house2) -> {
+//            if (kind == Kind.POPULAR) {
+//                int ratingComparison = Double.compare(house2.getRating(), house1.getRating());
+//                if (ratingComparison != 0) {
+//                    return ratingComparison;
+//                }
+//            } else if (kind == Kind.THE_LATEST) {
+//                int createdAtComparison = house2.getCreatedAt().compareTo(house1.getCreatedAt());
+//                if (createdAtComparison != 0) {
+//                    return createdAtComparison;
+//                }
+//            }
+//
+//            if (priceType == PriceType.LOW_TO_HIGH) {
+//                return house1.getPrice().compareTo(house2.getPrice());
+//            } else if (priceType == PriceType.HIGH_TO_LOW) {
+//                return house2.getPrice().compareTo(house1.getPrice());
+//            }
+//
+//            return 0;
+//        });
+//
+//        for (House house : houses) {
+//            HomeResponseForGetAll response = new HomeResponseForGetAll();
+//            response.setTitle(house.getTitle());
+//            response.setRate(String.valueOf(house.getRating()));
+//            response.setPrice(String.valueOf(house.getPrice()));
+//            response.setAddress(house.getAddress());
+//            if (house.getPhotos() != null && !house.getPhotos().isEmpty()) {
+//                response.setPhoto(house.getPhotos().get(0));
+//            } else {
+//                response.setPhoto(null);
+//            }
+//            response.setId(String.valueOf(house.getId()));
+//            response.setMaxGuests(String.valueOf(house.getMaxGuests()));
+//            responses.add(response);
+//        }
+//
+//        return responses;
+//    }
 }
