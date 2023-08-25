@@ -16,13 +16,13 @@ public class HouseController {
 
     private final HouseService houseService;
 
-@GetMapping("/search")
-public List<HouseResponse> searchHousesByTownOrTitleOrRegion(
-        @RequestParam String searchTerm) {
-
-    List<HouseResponse> searchResults = houseService.searchByTownOrTitleIgnoreCase(searchTerm);
-    return searchResults;
-}
+//@GetMapping("/search")
+//public List<HouseResponse> searchHousesByTownOrTitleOrRegion(
+//        @RequestParam String searchTerm) {
+//
+//    List<HouseResponse> searchResults = houseService.searchByTownOrTitleIgnoreCase(searchTerm);
+//    return searchResults;
+//}
 
     @GetMapping("/search/houses")
     public List<HomeResponseForGetAll> getHousesByUserId(
