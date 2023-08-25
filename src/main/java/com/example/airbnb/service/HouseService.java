@@ -83,7 +83,7 @@ public class HouseService {
 public List<HouseResponse> searchByTownOrTitleIgnoreCase(String searchTerm) {
     List<HouseResponse> list1 = new ArrayList<>();
     String cleanSearchTerm = cleanInput(searchTerm);
-    for (House house : searchHousesRepository.findAll()) {
+    for (House house : houseRepository.findAll()) {
         if (house.getRegion().name().equalsIgnoreCase(cleanSearchTerm) ||
                 house.getTown().toLowerCase().contains(cleanSearchTerm) ||
                 house.getTitle().toLowerCase().contains(cleanSearchTerm)) {
@@ -95,13 +95,11 @@ public List<HouseResponse> searchByTownOrTitleIgnoreCase(String searchTerm) {
             list1.add(houseResponse);
         }
     }
-
     return list1;
 }
-    private String cleanInput(String input) {
-        return input.trim().replaceAll("[-,_]", "").replaceAll("\\s+", "").toLowerCase();
-    }
-}
 
+    private String cleanInput(String input) {
+        return input.trim().replace("_,-", "").replaceAll("\\s+", "");
+    }
 
 }
