@@ -36,6 +36,7 @@ public class House {
     private HomeType homeType;
     @Enumerated(EnumType.STRING)
     private Status status;
+    private boolean blocked;
     @OneToMany(orphanRemoval = true, mappedBy = "house", fetch = FetchType.LAZY)
     private List<FeedBack> feedBacks = new ArrayList<>();
     @ManyToOne(fetch = FetchType.EAGER)

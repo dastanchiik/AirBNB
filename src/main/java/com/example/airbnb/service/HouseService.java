@@ -1,8 +1,10 @@
-package com.example.airbnb.Service;
+package com.example.airbnb.service;
 
+import com.example.airbnb.dto.response.HomeResponseForGetAll;
 import com.example.airbnb.dto.response.HouseResponseFindByID;
 import com.example.airbnb.dto.response.HouseResponseForGetAll;
 import com.example.airbnb.models.House;
+import com.example.airbnb.models.enums.Region;
 import com.example.airbnb.repositories.HouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -70,7 +72,7 @@ public class HouseService {
         for (House house : houseRepository.findAll()) {
             HouseResponseForGetAll houseResponseForGetAll = new HouseResponseForGetAll();
             houseResponseForGetAll.setTitle(house.getTitle());
-            houseResponseForGetAll.setRegion(house.getRegion());
+            houseResponseForGetAll.setRegion(String.valueOf(house.getRegion()));
             houseResponseForGetAll.setPrice(String.valueOf(house.getPrice()));
             houseResponseForGetAll.setMaxGuest(house.getMaxGuests());
             houseResponseForGetAll.setRating(house.getRating());
@@ -79,6 +81,35 @@ public class HouseService {
         }
 
         return list;
+    }
+
+    public List<HomeResponseForGetAll> searchHousesByRegion(Region region) {
+
+        List<HomeResponseForGetAll> responses = new ArrayList<>();
+        for (House house : houseRepository.findAll()) {
+            if (house.isBlocked()) {
+                responses.add(null);
+            }
+            if (house.getRegion() == region) {
+                HomeResponseForGetAll response = new HomeResponseForGetAll();
+                response.setId(String.valueOf(house.getId()));
+                if (!house.getPhotos().isEmpty() && house.getPhotos().get(0) != null) {
+                    response.setPhoto(house.getPhotos().get(0));
+                } else {
+                    response.setPhoto(null);
+                }
+                response.setRate(String.valueOf(house.getRating()));
+                response.setTitle(house.getTitle());
+                response.setPrice(String.valueOf(house.getPrice()));
+                response.setAddress(house.getAddress());
+                response.setMaxGuests(String.valueOf(house.getMaxGuests()));
+                responses.add(response);
+            }
+        }
+
+//        responses.sort(Comparator.comparing(h -> h.getRegion().name()));
+
+        return responses;
     }
 
 }
