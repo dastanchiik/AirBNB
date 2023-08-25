@@ -100,10 +100,9 @@ public List<HouseResponse> searchByTownOrTitleIgnoreCase(String searchTerm) {
     return list1;
 }
 
-    }
     private String cleanInput(String input) {
         return input.trim().replace("_,-", "").replaceAll("\\s+", "");
-
+    }
     public List<HomeResponseForGetAll> searchHousesByRegion(Region region) {
 
         List<HomeResponseForGetAll> responses = new ArrayList<>();
