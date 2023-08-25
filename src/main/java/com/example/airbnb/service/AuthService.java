@@ -1,6 +1,6 @@
 package com.example.airbnb.service;
 
-import com.example.airbnb.SecurityConfig.JwtUtils;
+import com.example.airbnb.securityConfig.JwtUtils;
 import com.example.airbnb.dto.authRequest.LoginRequest;
 import com.example.airbnb.dto.authRequest.UserRegisterRequest;
 import com.example.airbnb.dto.authRequest.authRespons.JwtResponse;

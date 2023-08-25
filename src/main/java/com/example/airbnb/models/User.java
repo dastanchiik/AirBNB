@@ -3,7 +3,6 @@ package com.example.airbnb.models;
 import com.example.airbnb.models.enums.Role;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

@@ -1,6 +1,7 @@
 package com.example.airbnb.models;
 
 import com.example.airbnb.models.enums.HomeType;
+import com.example.airbnb.models.enums.Region;
 import com.example.airbnb.models.enums.Status;
 import lombok.*;
 import javax.persistence.*;
@@ -26,7 +27,8 @@ public class House {
     private BigDecimal price;
     private Long maxGuests;
     private String description;
-    private String region;
+    @Enumerated(EnumType.STRING)
+    private Region region;
     private String town;
     private String address;
     private Double rating;

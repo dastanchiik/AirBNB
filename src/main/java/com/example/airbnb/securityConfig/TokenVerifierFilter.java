@@ -1,8 +1,7 @@
-package com.example.airbnb.SecurityConfig;
+package com.example.airbnb.securityConfig;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.airbnb.service.AuthUserDetailsService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,7 +27,7 @@ public class TokenVerifierFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
-        if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer " )) {
+        if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
             String jwt = authHeader.substring(7);
             if (jwt.isBlank()) {
                 response.sendError(
