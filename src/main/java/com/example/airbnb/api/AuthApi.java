@@ -1,13 +1,11 @@
 package com.example.airbnb.api;
 
-import com.example.airbnb.Service.AuthService;
+import com.example.airbnb.service.AuthService;
 import com.example.airbnb.dto.authRequest.LoginRequest;
 import com.example.airbnb.dto.authRequest.UserRegisterRequest;
 import com.example.airbnb.dto.authRequest.authRespons.JwtResponse;
-import com.example.airbnb.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

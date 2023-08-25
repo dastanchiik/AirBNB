@@ -1,16 +1,12 @@
 package com.example.airbnb;
 
 import com.example.airbnb.models.House;
-import com.example.airbnb.models.User;
-import com.example.airbnb.models.enums.HomeType;
 import com.example.airbnb.models.enums.Region;
-import com.example.airbnb.models.enums.Role;
 import com.example.airbnb.repositories.HouseRepository;
-import com.example.airbnb.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import javax.annotation.PostConstruct;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -23,26 +19,29 @@ public class AirBnbApplication {
 		SpringApplication.run(AirBnbApplication.class, args);
 	}
 
-    public static void main(String[] args) {
-        SpringApplication.run(AirBnbApplication.class, args);
-    }
 
-    private final HouseRepository houseRepository;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final HouseRepository searchHousesRepository;
+
 
     @PostConstruct
     public void init() {
+
         House house = new House();
-        house.setHomeType(HomeType.APARTMENT);
-        house.setAddress("fffffffffffffffffff");
-        house.setTitle("aaaaaaaaaa");
-        house.setTown("Bishkek");
-        houseRepository.save(house);
-        User user = new User();
-        user.setEmail("string");
-        user.setRole(Role.USER);
-        user.setPassword(passwordEncoder.encode("string"));
-        userRepository.save(user);
+        house.setRegion(Region.CHUI);
+        house.setTown("Asd");
+        house.setTitle("ffffff");
+        searchHousesRepository.save(house);
+
+        House house1 = new House();
+        house1.setRegion(Region.BATKEN);
+        house1.setTown("Karakol");
+        house1.setTitle("ddddd");
+        searchHousesRepository.save(house1);
+
+        House house2 = new House();
+        house2.setRegion(Region.JALAL_ABAD);
+        house2.setTown("Kochkorata");
+        house2.setTitle("aaaaaa");
+        searchHousesRepository.save(house2);
     }
 }

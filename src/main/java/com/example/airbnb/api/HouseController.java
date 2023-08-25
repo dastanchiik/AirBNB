@@ -1,18 +1,12 @@
 package com.example.airbnb.api;
 
-import com.example.airbnb.Service.HouseService;
-import com.example.airbnb.models.House;
 import com.example.airbnb.models.enums.Region;
+import com.example.airbnb.service.HouseService;
+import com.example.airbnb.dto.response.HouseResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/search")
@@ -20,15 +14,17 @@ import java.util.List;
 public class HouseController {
 
     private final HouseService houseService;
-    @GetMapping("/search")
-    public ResponseEntity<List<House>> searchHouses(
-            @RequestParam("title") String title,
-            @RequestParam("town") String town,
-            @RequestParam("region") Region region,
-            @RequestParam("homeType") String homeType) {
 
-        List<House> houses = houseService.searchHouses(title, town, region, homeType);
-        return new ResponseEntity<>(houses, HttpStatus.OK);
-    }
+@GetMapping("/search")
+public List<HouseResponse> searchHousesByTownOrTitleOrRegion(
+        @RequestParam String searchTerm) {
+
+    List<HouseResponse> searchResults = houseService.searchByTownOrTitleIgnoreCase(searchTerm);
+    return searchResults;
+}
 
 }
+
+
+
+
