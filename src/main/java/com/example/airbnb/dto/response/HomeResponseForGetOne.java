@@ -8,8 +8,10 @@ public class HomeResponseForGetOne {
     private String id;
     private String title;
     private List<String>photos;
+    private String rating;
     private String homeType;
     private String maxGuests;
+    private boolean blocked;
     private String address;
     private String description;
     private String userId;

@@ -16,23 +16,27 @@ public class JwtUtils {
     private String secret;
 
 
-    public String generateToken(String userName) {
-        Date expirationDate = Date.from(ZonedDateTime.now().plusMonths(1).toInstant());
+    public String generateToken(String username) {
+        Date expirationDate = Date.from( ZonedDateTime.now().plusMonths( 1 ).toInstant() );
         return JWT.create()
-                .withSubject("User details")
-                .withClaim("username", userName)
-                .withIssuedAt(new Date()).withIssuer("dastan")
-                .withExpiresAt(expirationDate)
-                .sign(Algorithm.HMAC256(secret));
+                .withSubject( "User details" )
+                .withClaim( "username", username )
+                .withIssuedAt( new Date() ).withIssuer( "dastan" )
+                .withExpiresAt( expirationDate )
+                .sign( Algorithm.HMAC256( secret ) );
     }
 
     public String validateTokenAndRetrieveClaim(String token) {
-        JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(secret))
-                .withSubject("User details")
-                .withIssuer("dastan")
+        JWTVerifier jwtVerifier = JWT.require( Algorithm.HMAC256( secret ) )
+                .withSubject( "User details" )
+                .withIssuer( "dastan" )
                 .build();
-        DecodedJWT verify = jwtVerifier.verify(token);
-        return verify.getClaim("userName").asString();
+        DecodedJWT verify = jwtVerifier.verify( token );
+        return verify.getClaim( "username" ).asString();
+    }
+
+    public JwtUtils(String secret) {
+        this.secret = secret;
     }
 
     public JwtUtils() {

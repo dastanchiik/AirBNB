@@ -20,9 +20,9 @@ public class FeedBack {
     private volatile int likeCount;
     private volatile int dislikeCount;
     private LocalDateTime createdAt = LocalDateTime.now();
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User owner;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private House house;
 
     public int incrementLikes() {

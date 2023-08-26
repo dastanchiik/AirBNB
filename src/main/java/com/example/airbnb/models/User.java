@@ -21,7 +21,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String photo;
     private String userName;
+    private String name;
     private String email;
     private LocalDateTime createdAt = LocalDateTime.now();
     private String password;

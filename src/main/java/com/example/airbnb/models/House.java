@@ -1,5 +1,6 @@
 package com.example.airbnb.models;
 
+import com.example.airbnb.models.enums.*;
 import com.example.airbnb.models.enums.HomeType;
 import com.example.airbnb.models.enums.Region;
 import com.example.airbnb.models.enums.Status;
@@ -24,19 +25,21 @@ public class House {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> photos;
     private String title;
-    private BigDecimal price;
+    private Long price;
     private Long maxGuests;
     private String description;
     @Enumerated(EnumType.STRING)
     private Region region;
     private String town;
+    @Enumerated(EnumType.STRING)
+    private BookedType bookedType;
     private String address;
+    private boolean blocked;
     private Double rating;
     @Enumerated(EnumType.STRING)
     private HomeType homeType;
     @Enumerated(EnumType.STRING)
     private Status status;
-    private boolean blocked;
     @OneToMany(orphanRemoval = true, mappedBy = "house", fetch = FetchType.LAZY)
     private List<FeedBack> feedBacks = new ArrayList<>();
     @ManyToOne(fetch = FetchType.EAGER)

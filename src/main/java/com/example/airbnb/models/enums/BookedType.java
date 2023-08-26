@@ -1,5 +1,5 @@
 package com.example.airbnb.models.enums;
 
 public enum BookedType {
-    BOOKED,NOT_BOOKED
+    BOOKED,NOT_BOOKED,ALL
 }
