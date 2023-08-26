@@ -22,7 +22,7 @@ public class House {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> photos;
     private String title;
-    private BigDecimal price;
+    private Long price;
     private Long maxGuests;
     private String description;
     private String region;

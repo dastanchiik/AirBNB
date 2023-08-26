@@ -93,13 +93,13 @@ public class AdminService {
     @Scheduled(fixedRate = 300000)
     @Transactional
     public void findAndRemoveSimilarUsers() {
-        for (Booking booking: bookingRepository.findAll()) {
+        for (Booking booking : bookingRepository.findAll()) {
             House house = houseRepository.findById(booking.getHouse().getId()).orElseThrow();
-                for (House house1:houseRepository.findAll()) {
-                    if (house1.getBookedType() == null){
-                        house1.setBookedType(BookedType.NOT_BOOKED);
-                    }
+            for (House house1 : houseRepository.findAll()) {
+                if (house1.getBookedType() == null) {
+                    house1.setBookedType(BookedType.NOT_BOOKED);
                 }
+            }
             house.setBookedType(BookedType.BOOKED);
             houseRepository.save(house);
         }
@@ -158,7 +158,7 @@ public class AdminService {
     }
 
     public List<Object> getAllUserBookings(Long id) {
-        List<Object>users = new ArrayList<>();
+        List<Object> users = new ArrayList<>();
         users.add(getStudentByIdForAdmin(id));
         List<BookingResponse> responses = new ArrayList<>();
         User user = repository.findById(id).orElseThrow();
@@ -185,12 +185,12 @@ public class AdminService {
         return users;
     }
 
-    public List<Object> getHousesByUserId(Long id,Boolean blocking) {
+    public List<Object> getHousesByUserId(Long id, Boolean blocking) {
         List<Object> user = new ArrayList<>();
         user.add(getStudentByIdForAdmin(id));
         List<HomeResponseForGetAll> responses = new ArrayList<>();
         for (House house : houseRepository.findAll()) {
-            if (blocking){
+            if (blocking) {
                 house.setBlocked(true);
                 houseRepository.save(house);
             }
@@ -261,11 +261,11 @@ public class AdminService {
         }
     }
 
-    public Role updateRole(){
+    public Role updateRole() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Role role = repository.findByEmail(authentication.getName()).get().getRole();
         User user = repository.findByEmail(authentication.getName()).get();
-        if (role == Role.ADMIN){
+        if (role == Role.ADMIN) {
             user.setRole(Role.ADMIN_USER);
         } else if (role == Role.ADMIN_USER) {
             user.setRole(Role.ADMIN);
@@ -273,34 +273,86 @@ public class AdminService {
         repository.save(user);
         return user.getRole();
     }
-//    public List<HomeResponseForGetAll> getAllHousingAndSorted(BookedType bookedType, Kind kind, HomeType homeType, PriceType priceType) {
-//        List<House>houses = new ArrayList<>();
-//        List<HomeResponseForGetAll> responses = new ArrayList<>();
-//        for (House house:) {
-//
-//        }
-//    }
+
+    public List<HomeResponseForGetAll> getSortedAllHouses(BookedType bookedType, Kind kind, HomeType homeType, PriceType priceType) {
+        List<House> houses = new ArrayList<>();
+        List<HomeResponseForGetAll> responses = new ArrayList<>();
 
 
+        if (kind == Kind.POPULAR) {
+            houses.addAll(houseRepository.sortedHousesPopular(homeType, bookedType));
+        } else if (kind == Kind.THE_LATEST && priceType == PriceType.LOW_TO_HIGH ) {
+            houses.addAll(houseRepository.sortedHousesLatestAndLow(homeType, bookedType));
+        } else if (kind == Kind.POPULAR && priceType == PriceType.HIGH_TO_LOW) {
+            houses.addAll(houseRepository.sortedHousesPopularAndHigh(homeType, bookedType));
+        }
+        else if (kind == Kind.POPULAR && priceType == PriceType.LOW_TO_HIGH) {
+            houses.addAll(houseRepository.sortedHousesPopularAndLow(homeType, bookedType));
+        } else if (kind == Kind.THE_LATEST && priceType == PriceType.HIGH_TO_LOW) {
+            houses.addAll(houseRepository.sortedHousesLatestAndHigh(homeType, bookedType));
+        } else if (kind == Kind.THE_LATEST && priceType == PriceType.ALL) {
+            houses.addAll(houseRepository.sortedHousesLatest(homeType, bookedType));
+        } else if (priceType == PriceType.HIGH_TO_LOW && kind == Kind.ALL) {
+            houses.addAll(houseRepository.sortedHousesHigh(homeType, bookedType));
+        } else if (priceType == PriceType.LOW_TO_HIGH && kind == Kind.ALL) {
+            houses.addAll(houseRepository.sortedHousesLow(homeType, bookedType));
+        } else if (kind == Kind.ALL && priceType == PriceType.ALL && bookedType == BookedType.ALL && homeType == HomeType.ALL) {
+            houses.addAll(houseRepository.findAll());
+        } else if (kind == Kind.ALL && priceType == PriceType.ALL) {
+            for (House house:houseRepository.findAll()) {
+                if (house.getBookedType() == bookedType || house.getHomeType() == homeType){
+                    houses.add(house);
+                }
+            }
+        }
 
+        for (House house : houses) {
+            HomeResponseForGetAll response = new HomeResponseForGetAll();
+            response.setId(String.valueOf(house.getId()));
+            response.setRate(String.valueOf(house.getRating()));
+            response.setPrice(String.valueOf(house.getPrice()));
+            if (house.getPhotos() != null && !house.getPhotos().isEmpty()) {
+                response.setPhoto(house.getPhotos().get(0));
+            } else {
+                response.setPhoto(null);
+            }
+            response.setAddress(house.getAddress());
+            response.setTitle(house.getTitle());
+            response.setMaxGuests(String.valueOf(house.getMaxGuests()));
+            responses.add(response);
+        }
+        return responses;
+    }
+    public List<House> getSortedHouses(Kind kind, PriceType priceType, HomeType homeType, BookedType bookedType) {
+        Sort sort = Sort.unsorted(); // Инициализируем без сортировки
 
+        if (kind == Kind.POPULAR) {
+            if (priceType == PriceType.HIGH_TO_LOW) {
+                sort = Sort.by(Sort.Direction.DESC, "price");
+            } else if (priceType == PriceType.LOW_TO_HIGH) {
+                sort = Sort.by(Sort.Direction.ASC, "price");
+            }
+        } else if (kind == Kind.THE_LATEST && priceType == PriceType.LOW_TO_HIGH) {
+            sort = Sort.by(Sort.Direction.ASC, "date"); // Замените "date" на поле, по которому нужно сортировать по дате
+        } else if (kind == Kind.ALL && priceType == PriceType.HIGH_TO_LOW) {
+            sort = Sort.by(Sort.Direction.DESC, "price");
+        }
+        // Другие условия и сортировки могут быть добавлены по аналогии
 
+        List<House> houses = new ArrayList<>();
 
+        if (kind == Kind.POPULAR) {
+            houses.addAll(houseRepository.sortedHousesPopular(homeType, bookedType));
+        } else if (kind == Kind.THE_LATEST && priceType == PriceType.LOW_TO_HIGH) {
+            houses.addAll(houseRepository.sortedHousesLatestAndLow(homeType, bookedType));
+        } else if (kind == Kind.ALL && priceType == PriceType.HIGH_TO_LOW) {
+            houses.addAll(houseRepository.sortedHousesHigh(homeType, bookedType));
+        }
+        // Другие условия и вызовы методов могут быть добавлены по аналогии
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return houses;
+    }
+}
 
 
 
@@ -353,4 +405,3 @@ public class AdminService {
 //
 //        return responses;
 //    }
-}

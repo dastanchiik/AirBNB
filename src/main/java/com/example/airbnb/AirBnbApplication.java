@@ -50,7 +50,7 @@ public class AirBnbApplication {
 		house1.setUser(user);
 		house1.setStatus(Status.ACCEPTED);
 		house1.setHomeType(HomeType.HOUSE);
-		house1.setPrice(BigDecimal.valueOf(123456789));
+		house1.setPrice(123456789L);
 		house1.setRating(5.0);
 		houseRepository.save(house1);
 
@@ -59,7 +59,7 @@ public class AirBnbApplication {
 		home.setUser(user12);
 		home.setStatus(Status.ACCEPTED);
 		home.setHomeType(HomeType.HOUSE);
-		home.setPrice(BigDecimal.valueOf(12345678));
+		home.setPrice(12345678L);
 		home.setRating(4.9);
 		houseRepository.save(home);
 
@@ -68,7 +68,7 @@ public class AirBnbApplication {
 		house.setUser(user);
 		house.setStatus(Status.ACCEPTED);
 		house.setHomeType(HomeType.HOUSE);
-		house.setPrice(BigDecimal.valueOf(1234567));
+		house.setPrice(1234567L);
 		house.setRating(4.8);
 		houseRepository.save(house);
 
@@ -77,16 +77,16 @@ public class AirBnbApplication {
 		house3.setUser(user);
 		house3.setStatus(Status.ACCEPTED);
 		house3.setHomeType(HomeType.APARTMENT);
-		house3.setPrice(BigDecimal.valueOf(123456));
+		house3.setPrice(123456L);
 		house3.setRating(4.7);
 		houseRepository.save(house3);
 
 		House house10 = new House();
 		house10.setTitle("D");
 		house10.setUser(user);
-		house10.setStatus(Status.ACCEPTED);
+		house10.setStatus(Status.REJECTED);
 		house10.setHomeType(HomeType.APARTMENT);
-		house10.setPrice(BigDecimal.valueOf(12345));
+		house10.setPrice(12345L);
 		house10.setRating(4.6);
 		houseRepository.save(house10);
 
@@ -94,8 +94,8 @@ public class AirBnbApplication {
 		all.setTitle("all");
 		all.setUser(user);
 		all.setStatus(Status.ACCEPTED);
-		all.setHomeType(HomeType.ALL);
-		all.setPrice(BigDecimal.valueOf(12343));
+		all.setHomeType(HomeType.HOUSE);
+		all.setPrice(12343L);
 		all.setRating(4.5);
 		houseRepository.save(all);
 

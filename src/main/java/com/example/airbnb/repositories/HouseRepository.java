@@ -4,7 +4,6 @@ import com.example.airbnb.models.House;
 import com.example.airbnb.models.enums.BookedType;
 import com.example.airbnb.models.enums.HomeType;
 import com.example.airbnb.models.enums.Kind;
-import com.example.airbnb.models.enums.PriceType;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,30 +16,43 @@ import java.util.List;
 @Transactional
 public interface HouseRepository extends JpaRepository<House,Long> {
 
-    @Query("select h from House h order by h.rating desc")
-    List<House>sortedHousesPopular();
+    List<House>findAll(Sort sort);
 
-    @Query("select h from House h order by h.price desc")
-    List<House>sortedHousesHigh();
+    @Query("select h from House h where (h.homeType =:homeType or :homeType = 'ALL') and (h.bookedType =:bookedType or :bookedType = 'ALL') and h.status = 'ACCEPTED' order by h.rating desc")
+    List<House>sortedHousesPopular(@Param("homeType")HomeType homeType,@Param("bookedType")BookedType bookedType);
 
-    @Query("select h from House h order by h.price asc")
-    List<House>sortedHousesLow();
+    @Query("select h from House h where (h.homeType =:homeType or :homeType = 'ALL') and (h.bookedType =:bookedType or :bookedType = 'ALL') and h.status = 'ACCEPTED' order by h.price desc")
+    List<House>sortedHousesHigh(@Param("homeType")HomeType homeType,@Param("bookedType")BookedType bookedType);
 
-    @Query("select h from House h order by h.createdAt desc ")
-    List<House>sortedHousesLatest();
+    @Query("select h from House h where (h.homeType =:homeType or :homeType = 'ALL') and (h.bookedType =:bookedType or :bookedType = 'ALL') and h.status = 'ACCEPTED' order by h.price asc")
+    List<House>sortedHousesLow(@Param("homeType")HomeType homeType,@Param("bookedType")BookedType bookedType);
 
-    @Query("select h from House h order by h.createdAt,h.price desc ")
-    List<House>sortedHousesLatestAndHigh();
+    @Query("select h from House h where (h.homeType =:homeType or :homeType = 'ALL') and (h.bookedType =:bookedType or :bookedType = 'ALL') and h.status = 'ACCEPTED' order by h.createdAt desc ")
+    List<House>sortedHousesLatest(@Param("homeType")HomeType homeType,@Param("bookedType")BookedType bookedType);
 
-    @Query("select h from House h order by h.createdAt desc union select h from House h order by h.price asc")
-    List<House>sortedHousesLatestAndLow();
+    @Query("select h from House h where (h.homeType =:homeType or :homeType = 'ALL') and (h.bookedType =:bookedType or :bookedType = 'ALL') and h.status = 'ACCEPTED' order by h.createdAt,h.price desc ")
+    List<House>sortedHousesLatestAndHigh (@Param("homeType")HomeType homeType,@Param("bookedType")BookedType bookedType);
 
-    @Query("select h from House h order by h.rating desc union select h from House h order by h.price asc")
-    List<House>sortedHousesPopularAndLow();
+    @Query("select h from House h where (h.homeType =:homeType or :homeType = 'ALL') and (h.bookedType =:bookedType or :bookedType = 'ALL') and h.status = 'ACCEPTED' order by h.createdAt desc, case when h.createdAt is null then 0 else 1 end, h.price asc")
+    List<House> sortedHousesLatestAndLow(@Param("homeType") HomeType homeType, @Param("bookedType") BookedType bookedType);
 
-    @Query("select h from House h order by h.rating desc union select h from House h order by h.price desc ")
-    List<House>sortedHousesPopularAndHigh();
+    @Query("select h from House h where (h.homeType =:homeType or :homeType = 'ALL') and (h.bookedType =:bookedType or :bookedType = 'ALL') and h.status = 'ACCEPTED' order by h.rating desc, case when h.rating is null then 0 else 1 end, h.price asc")
+    List<House> sortedHousesPopularAndLow(@Param("homeType") HomeType homeType, @Param("bookedType") BookedType bookedType);
 
+    @Query("select h from House h where (h.homeType =:homeType or :homeType = 'ALL') and (h.bookedType =:bookedType or :bookedType = 'ALL') and h.status = 'ACCEPTED' order by h.rating desc, case when h.rating is null then 0 else 1 end, h.price desc")
+    List<House> sortedHousesPopularAndHigh(@Param("homeType") HomeType homeType, @Param("bookedType") BookedType bookedType);
+
+
+
+
+//    @Query("select h from House h where h.homeType =:homeType and h.bookedType =:bookedType order by h.createdAt desc union select h from House h order by h.price asc")
+//    List<House>sortedHousesLatestAndLow(@Param("homeType")HomeType homeType,@Param("bookedType")BookedType bookedType);
+//
+//    @Query("select h from House h where h.homeType =:homeType and h.bookedType =:bookedType  order by h.rating desc union select h from House h order by h.price asc")
+//    List<House>sortedHousesPopularAndLow(@Param("homeType")HomeType homeType,@Param("bookedType")BookedType bookedType);
+//
+//    @Query("select h from House h where h.homeType =:homeType and h.bookedType =:bookedType order by h.rating desc union select h from House h order by h.price desc ")
+//    List<House>sortedHousesPopularAndHigh(@Param("homeType")HomeType homeType,@Param("bookedType")BookedType bookedType);
     @Query("select h from House h where h.status = null order by h.createdAt desc")
     List<House> getAllApplications();
 
