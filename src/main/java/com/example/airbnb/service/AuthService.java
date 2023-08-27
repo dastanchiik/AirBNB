@@ -7,9 +7,6 @@ import com.example.airbnb.dto.authRequest.authRespons.JwtResponse;
 import com.example.airbnb.models.User;
 import com.example.airbnb.models.enums.Role;
 import com.example.airbnb.repositories.UserRepository;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -78,42 +75,4 @@ public class AuthService {
                 user.getRole()
         );
     }
-
-    public JwtResponse registerUserWithGoogle(UserRegisterRequest userRegisterRequest) {
-        User user = new User();
-        user.setUserName(userRegisterRequest.getUsername());
-        user.setEmail(userRegisterRequest.getEmail());
-        user.setRole(Role.USER);
-        user.setPassword(passwordEncoder.encode(userRegisterRequest.getPassword()));
-
-        // Google authentication logic
-        String googleIdToken = jwtUtils.generateToken(userRegisterRequest.getEmail());
-        if (googleIdToken != null && !googleIdToken.isEmpty()) {
-            try {
-                FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(googleIdToken);
-
-                // Check if the Google email matches the registered email
-                if (!user.getEmail().equals(decodedToken.getEmail())) {
-                    throw new RuntimeException("Google email doesn't match the registered email.");
-                }
-
-                // You can also perform additional checks here if needed
-            } catch (FirebaseAuthException e) {
-                throw new RuntimeException("Google authentication failed: " + e.getMessage());
-            }
-        }
-
-        // ... The rest of your registration logic ...
-
-        // Generate JWT token
-        String token = jwtUtils.generateToken(user.getEmail());
-
-        return new JwtResponse(
-                user.getEmail(),
-                token,
-                "Created",
-                user.getRole()
-        );
-    }
-
 }
