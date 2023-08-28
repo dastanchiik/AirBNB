@@ -15,8 +15,6 @@ import java.util.List;
 @Transactional
 public interface HouseRepository extends JpaRepository<House,Long> {
 
-    List<House>findAll(Sort sort);
-
     @Query("select h from House h where (h.homeType =:homeType or :homeType = 'ALL') and (h.bookedType =:bookedType or :bookedType = 'ALL') and h.status = 'ACCEPTED' order by h.rating desc")
     List<House>sortedHousesPopular(@Param("homeType")HomeType homeType,@Param("bookedType")BookedType bookedType);
 
@@ -45,5 +43,8 @@ public interface HouseRepository extends JpaRepository<House,Long> {
 
     @Query("select h from House h where h.status = null and h.id =:id")
     House getApplicationById(@Param("id") Long id);
+
+    @Query("select h from House h where h.status = null and h.user.id =:id and h.blocked = false")
+    List<House>getAllOnModerationByUserId(@Param("id") Long id);
 
 }
