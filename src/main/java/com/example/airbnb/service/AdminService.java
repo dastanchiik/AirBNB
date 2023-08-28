@@ -352,56 +352,5 @@ public class AdminService {
 
         return houses;
     }
+
 }
-
-
-
-//    public List<HomeResponseForGetAll> getAllHousingAndSorted(BookedType bookedType, Kind kind, HomeType homeType, PriceType priceType) {
-//        List<HomeResponseForGetAll> responses = new ArrayList<>();
-//        List<House> houses = new ArrayList<>(houseRepository.findAll());
-//
-//        houses.removeIf(house ->
-//                (bookedType != BookedType.ALL && bookedType != house.getBookedType()) ||
-//                (homeType != HomeType.ALL && homeType != house.getHomeType())
-//        );
-//
-//        houses.sort((house1, house2) -> {
-//            if (kind == Kind.POPULAR) {
-//                int ratingComparison = Double.compare(house2.getRating(), house1.getRating());
-//                if (ratingComparison != 0) {
-//                    return ratingComparison;
-//                }
-//            } else if (kind == Kind.THE_LATEST) {
-//                int createdAtComparison = house2.getCreatedAt().compareTo(house1.getCreatedAt());
-//                if (createdAtComparison != 0) {
-//                    return createdAtComparison;
-//                }
-//            }
-//
-//            if (priceType == PriceType.LOW_TO_HIGH) {
-//                return house1.getPrice().compareTo(house2.getPrice());
-//            } else if (priceType == PriceType.HIGH_TO_LOW) {
-//                return house2.getPrice().compareTo(house1.getPrice());
-//            }
-//
-//            return 0;
-//        });
-//
-//        for (House house : houses) {
-//            HomeResponseForGetAll response = new HomeResponseForGetAll();
-//            response.setTitle(house.getTitle());
-//            response.setRate(String.valueOf(house.getRating()));
-//            response.setPrice(String.valueOf(house.getPrice()));
-//            response.setAddress(house.getAddress());
-//            if (house.getPhotos() != null && !house.getPhotos().isEmpty()) {
-//                response.setPhoto(house.getPhotos().get(0));
-//            } else {
-//                response.setPhoto(null);
-//            }
-//            response.setId(String.valueOf(house.getId()));
-//            response.setMaxGuests(String.valueOf(house.getMaxGuests()));
-//            responses.add(response);
-//        }
-//
-//        return responses;
-//    }
