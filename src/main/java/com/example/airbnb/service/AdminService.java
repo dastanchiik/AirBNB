@@ -323,34 +323,4 @@ public class AdminService {
         }
         return responses;
     }
-    public List<House> getSortedHouses(Kind kind, PriceType priceType, HomeType homeType, BookedType bookedType) {
-        Sort sort = Sort.unsorted(); // Инициализируем без сортировки
-
-        if (kind == Kind.POPULAR) {
-            if (priceType == PriceType.HIGH_TO_LOW) {
-                sort = Sort.by(Sort.Direction.DESC, "price");
-            } else if (priceType == PriceType.LOW_TO_HIGH) {
-                sort = Sort.by(Sort.Direction.ASC, "price");
-            }
-        } else if (kind == Kind.THE_LATEST && priceType == PriceType.LOW_TO_HIGH) {
-            sort = Sort.by(Sort.Direction.ASC, "date"); // Замените "date" на поле, по которому нужно сортировать по дате
-        } else if (kind == Kind.ALL && priceType == PriceType.HIGH_TO_LOW) {
-            sort = Sort.by(Sort.Direction.DESC, "price");
-        }
-        // Другие условия и сортировки могут быть добавлены по аналогии
-
-        List<House> houses = new ArrayList<>();
-
-        if (kind == Kind.POPULAR) {
-            houses.addAll(houseRepository.sortedHousesPopular(homeType, bookedType));
-        } else if (kind == Kind.THE_LATEST && priceType == PriceType.LOW_TO_HIGH) {
-            houses.addAll(houseRepository.sortedHousesLatestAndLow(homeType, bookedType));
-        } else if (kind == Kind.ALL && priceType == PriceType.HIGH_TO_LOW) {
-            houses.addAll(houseRepository.sortedHousesHigh(homeType, bookedType));
-        }
-        // Другие условия и вызовы методов могут быть добавлены по аналогии
-
-        return houses;
-    }
-
 }

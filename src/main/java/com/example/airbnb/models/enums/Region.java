@@ -7,5 +7,6 @@ public enum Region {
     NARYN,
     BATKEN,
     OSH,
-    YSSYK_KOL
+    YSSYK_KOL,
+    ALL
 }
