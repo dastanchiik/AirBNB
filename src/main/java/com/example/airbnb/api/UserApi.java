@@ -1,6 +1,7 @@
 package com.example.airbnb.api;
 
 import com.example.airbnb.dto.response.HomeResponseForGetAll;
+import com.example.airbnb.dto.response.HouseResponseForMain;
 import com.example.airbnb.dto.response.NotificationResponse;
 import com.example.airbnb.models.Notification;
 import com.example.airbnb.repositories.NotificationRepository;
@@ -45,5 +46,20 @@ public class UserApi {
     @GetMapping("/getAll/on/moderation")
     public List<HomeResponseForGetAll> getListOnModeration(){
         return userService.getAllOnModeration();
+    }
+
+    @GetMapping("/get/popular/apartments")
+    public List<HouseResponseForMain> getPopularApartments(){
+        return userService.getPopularApartments();
+    }
+
+    @GetMapping("/get/popular/houses")
+    public List<HouseResponseForMain> getPopularHouses(){
+        return userService.getPopularHouses();
+    }
+
+    @GetMapping("/get/lasted/announcement")
+    public List<HouseResponseForMain> getLasted(){
+        return userService.getLastedAnnouncement();
     }
 }

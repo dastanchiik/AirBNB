@@ -35,6 +35,7 @@ public class House {
     private BookedType bookedType;
     private String address;
     private boolean blocked;
+    private Long countViewing;
     private Double rating;
     @Enumerated(EnumType.STRING)
     private HomeType homeType;
