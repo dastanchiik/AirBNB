@@ -2,6 +2,8 @@ package com.example.airbnb.service;
 
 import com.example.airbnb.dto.UserRequest;
 import com.example.airbnb.dto.response.HomeResponseForGetAll;
+import com.example.airbnb.dto.response.HouseResponse;
+import com.example.airbnb.dto.response.HouseResponseForMain;
 import com.example.airbnb.dto.response.UserResponse;
 import com.example.airbnb.models.House;
 import com.example.airbnb.repositories.HouseRepository;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -85,4 +88,109 @@ public class UserService {
         }
         return responses;
     }
+
+    public List<HouseResponseForMain> getPopularApartments() {
+        List<House> houses = houseRepository.getPopularApartments();
+        return houses.stream()
+                .limit(7) // Ограничиваем поток до 7 элементов
+                .map(house -> {
+                    HouseResponseForMain response = new HouseResponseForMain();
+                    response.setId(String.valueOf(house.getId()));
+                    response.setDescription(house.getDescription());
+                    response.setAddress(house.getAddress());
+                    response.setTitle(house.getTitle());
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
+    /**public List<HouseResponseForMain> getPopularApartments(){
+        List<HouseResponseForMain> responses = new ArrayList<>();
+        List<House>houses = houseRepository.getPopularApartments();
+        for (int i = 0; i <7 ; i++) {
+            House house;
+            if (houses.get(i) != null){
+                house = houses.get(i);
+            }else if(houses.get(i) == null){
+                house = houses.get(0);
+            }else {
+                house = null;
+            }
+            HouseResponseForMain response = new HouseResponseForMain();
+            response.setId(String.valueOf(house.getId()));
+            response.setDescription(house.getDescription());
+            response.setAddress(house.getAddress());
+            response.setTitle(house.getTitle());
+            responses.add(response);
+        }
+        return responses;
+    }*/
+
+    public List<HouseResponseForMain> getPopularHouses() {
+        List<House> houses = houseRepository.getPopularHouses();
+        return houses.stream()
+                .limit(7) // Ограничиваем поток до 7 элементов
+                .map(house -> {
+                    HouseResponseForMain response = new HouseResponseForMain();
+                    response.setId(String.valueOf(house.getId()));
+                    response.setDescription(house.getDescription());
+                    response.setAddress(house.getAddress());
+                    response.setTitle(house.getTitle());
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
+    /*public List<HouseResponseForMain> getPopularHouses(){
+        List<HouseResponseForMain> responses = new ArrayList<>();
+        List<House>houses = houseRepository.getPopularHouses();
+        for (int i = 0; i <7 ; i++) {
+            House house = new House();
+            if (houses.get(i) != null){
+            house = houses.get(i);
+            }else if(houses.get(i) == null){
+                house = houses.get(0);
+            }else {
+                house = null;
+            }
+            HouseResponseForMain response = new HouseResponseForMain();
+            response.setId(String.valueOf(house.getId()));
+            response.setDescription(house.getDescription());
+            response.setAddress(house.getAddress());
+            response.setTitle(house.getTitle());
+            responses.add(response);
+        }
+        return responses;
+    }*/
+
+    public List<HouseResponseForMain> getLastedAnnouncement() {
+        List<House> houses = houseRepository.getLasted();
+        return houses.stream()
+                .limit(7) // Ограничиваем поток до 7 элементов
+                .map(house -> {
+                    HouseResponseForMain response = new HouseResponseForMain();
+                    response.setId(String.valueOf(house.getId()));
+                    response.setDescription(house.getDescription());
+                    response.setAddress(house.getAddress());
+                    response.setTitle(house.getTitle());
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
+    // public List<HouseResponseForMain> getLastedAnnouncement(){
+   //     List<HouseResponseForMain> responses = new ArrayList<>();
+   //     List<House>houses = houseRepository.getLasted();
+   //     for (int i = 0; i <7 ; i++) {
+   //
+   //         House house = houses.get(i);
+   //         HouseResponseForMain response = new HouseResponseForMain();
+   //         response.setId(String.valueOf(house.getId()));
+   //         response.setDescription(house.getDescription());
+   //         response.setAddress(house.getAddress());
+   //         response.setTitle(house.getTitle());
+   //         responses.add(response);
+   //     }
+   //     return responses;
+   // }
 }
